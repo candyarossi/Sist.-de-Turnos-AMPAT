@@ -1,32 +1,32 @@
 package Vistas;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import org.json.JSONArray;
-
 import Json.ArchivosJson;
 import Objetos.Sistema;
 import Objetos.Turno;
-
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 
+
 public class VerTurno extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -49,6 +49,7 @@ public class VerTurno extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public VerTurno(LocalDate fecha, LocalTime proximo, String tipoIng, String nombreIng) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("media\\logo.png"));
 		setTitle("Sistema de Turnos SU TAXI - AMPAT");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 630, 520);
@@ -57,7 +58,7 @@ public class VerTurno extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel titulo = new JLabel("Sistema de Turnos SU TAXI - AMPAT");
+		JLabel titulo = new JLabel("Sistema de Turnos");
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		titulo.setBounds(10, 25, 594, 83);
@@ -91,9 +92,11 @@ public class VerTurno extends JFrame implements ActionListener {
 		volver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Turnos turnosP = new Turnos(turno.getFecha());
-				turnosP.setVisible(true);       }
+				turnosP.setVisible(true);
+				dispose();
+				}
 		});
-		volver.setBounds(103, 407, 149, 42);
+		volver.setBounds(103, 389, 149, 42);
 		contentPane.add(volver);
 		
 		JButton pdf = new JButton("Confirmar e Imprimir");
@@ -115,10 +118,16 @@ public class VerTurno extends JFrame implements ActionListener {
 				
 				Calendario calendar = new Calendario();
 				calendar.setVisible(true);
+				dispose();
 			}
 		});
-		pdf.setBounds(328, 407, 182, 42);
+		pdf.setBounds(328, 389, 182, 42);
 		contentPane.add(pdf);
+		
+		JLabel creditos = new JLabel("2020 \u00A9 Candela Yarossi");
+		creditos.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		creditos.setBounds(494, 456, 110, 14);
+		contentPane.add(creditos);
 		
 	}
 

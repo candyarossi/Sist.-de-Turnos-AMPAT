@@ -13,24 +13,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import Json.ArchivosJson;
-import Objetos.Turno;
 
 
 public class Sistema {
 	
-	private HashMap<String, ArrayList> turnos;
+	private HashMap<String, ArrayList<Turno>> turnos;
 	
 
 	public Sistema() {
 		super();
-		this.turnos = new HashMap<String, ArrayList>();
+		this.turnos = new HashMap<String, ArrayList<Turno>>();
 	}
 	
 
 	public boolean agregar(String nombre, LocalDate dia, String tipo) {
 		
 		boolean agregado = false;
-		ArrayList<Turno> turnosDelDia = new ArrayList();
+		ArrayList<Turno> turnosDelDia = new ArrayList<Turno>();
 		
 		if(turnos.containsKey(dia.toString())) {
 		
@@ -53,11 +52,11 @@ public class Sistema {
 
 	public void listar() {
 		
-		Iterator<Entry<String, ArrayList>> it = turnos.entrySet().iterator();
+		Iterator<Entry<String, ArrayList<Turno>>> it = turnos.entrySet().iterator();
 		
 		while(it.hasNext()) {
 			
-			Map.Entry<String, ArrayList> me = (Map.Entry<String, ArrayList>) it.next();
+			Map.Entry<String, ArrayList<Turno>> me = (Map.Entry<String, ArrayList<Turno>>) it.next();
 			ArrayList<Turno> turnosDelDia = me.getValue();
 			System.out.println("\n----------------------------------");
 			System.out.println("DIA " + me.getKey() + "\n");
@@ -190,11 +189,11 @@ public class Sistema {
 		
 		JSONArray turnosjson = new JSONArray();
 		
-		Iterator<Entry<String, ArrayList>> it = turnos.entrySet().iterator();
+		Iterator<Entry<String, ArrayList<Turno>>> it = turnos.entrySet().iterator();
 		
 		while(it.hasNext()) {
 			
-			Map.Entry<String, ArrayList> me = (Map.Entry<String, ArrayList>) it.next();
+			Map.Entry<String, ArrayList<Turno>> me = (Map.Entry<String, ArrayList<Turno>>) it.next();
 			ArrayList<Turno> turnosDelDia = me.getValue();
 			
 			for(Turno aux : turnosDelDia) {
@@ -211,11 +210,11 @@ public class Sistema {
 		
 		ArrayList<String> aEliminar = new ArrayList<String>();
 		
-		Iterator<Entry<String, ArrayList>> it = turnos.entrySet().iterator();
+		Iterator<Entry<String, ArrayList<Turno>>> it = turnos.entrySet().iterator();
 		
 		while(it.hasNext()) {
 			
-			Map.Entry<String, ArrayList> me = (Map.Entry<String, ArrayList>) it.next();
+			Map.Entry<String, ArrayList<Turno>> me = (Map.Entry<String, ArrayList<Turno>>) it.next();
 			
 			LocalDate diferencia = LocalDate.now().minusMonths(3);
 			
@@ -241,7 +240,7 @@ public class Sistema {
 			
 			try {
 				
-				ArrayList<Turno> turnosDelDia = new ArrayList();
+				ArrayList<Turno> turnosDelDia = new ArrayList<Turno>();
 				
 				turnoJson = (JSONObject) json.get(i);
 				

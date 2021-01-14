@@ -1,26 +1,28 @@
 package Vistas;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import org.json.JSONArray;
-
 import Json.ArchivosJson;
 import Objetos.Sistema;
-
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 
 public class Inicio extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -43,6 +45,7 @@ public class Inicio extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Inicio() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("media\\logo.png"));
 		setTitle("Sistema de Turnos SU TAXI - AMPAT");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 630, 520);
@@ -58,10 +61,10 @@ public class Inicio extends JFrame implements ActionListener {
 		JSONArray json = sistema.toJson();
 		ArchivosJson.grabarTurnos(json); 
 		
-		JLabel titulo = new JLabel("Sistema de Turnos SU TAXI - AMPAT");
+		JLabel titulo = new JLabel("Sistema de Turnos");
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		titulo.setBounds(10, 100, 594, 83);
+		titulo.setBounds(10, 145, 594, 83);
 		contentPane.add(titulo);
 		
 		JButton ingresar = new JButton("Ingresar");
@@ -70,9 +73,10 @@ public class Inicio extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				Calendario calendar = new Calendario();
 				calendar.setVisible(true);
+				dispose();
 			}
 		});
-		ingresar.setBounds(233, 239, 149, 42);
+		ingresar.setBounds(233, 260, 149, 42);
 		contentPane.add(ingresar);
 		
 		JButton salir = new JButton("Salir");
@@ -82,8 +86,20 @@ public class Inicio extends JFrame implements ActionListener {
 				System.exit(0);
 			}
 		});
-		salir.setBounds(233, 311, 149, 42);
+		salir.setBounds(233, 332, 149, 42);
 		contentPane.add(salir);
+		
+		JLabel imagen = new JLabel("");
+		imagen.setIcon(new ImageIcon("media\\logo.png"));
+		imagen.setBounds(216, 58, 184, 90);
+		contentPane.add(imagen);
+		
+		JLabel creditos = new JLabel("2020 \u00A9 Candela Yarossi");
+		creditos.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		creditos.setBounds(494, 456, 110, 14);
+		contentPane.add(creditos);
+		
+		
 	}
 
 	@Override

@@ -1,44 +1,37 @@
 package Vistas;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import org.json.JSONArray;
-
 import Json.ArchivosJson;
 import Objetos.Sistema;
 import Objetos.Tipo;
-import Objetos.Turno;
-
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+
 public class Turnos extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private final JButton aceptar = new JButton("New button");
 	private JTextField nombre;
-	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -60,23 +53,24 @@ public class Turnos extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Turnos(LocalDate fecha) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("media\\logo.png"));
 		setTitle("Sistema de Turnos SU TAXI - AMPAT");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 630, 520);
+		setBounds(100, 100, 730, 520);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel titulo = new JLabel("Sistema de Turnos SU TAXI - AMPAT");
+		JLabel titulo = new JLabel("Sistema de Turnos");
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		titulo.setBounds(10, 25, 594, 83);
+		titulo.setBounds(10, 25, 694, 83);
 		contentPane.add(titulo);
 		
 		JLabel titulo2 = new JLabel("TURNOS DEL DIA " + fecha.getDayOfMonth() + "/" + fecha.getMonthValue());
 		titulo2.setFont(new Font("Tahoma", Font.BOLD, 15));
-		titulo2.setBounds(103, 99, 241, 35);
+		titulo2.setBounds(60, 99, 241, 35);
 		contentPane.add(titulo2);
 		
 		JSONArray contenido = ArchivosJson.leerTurnos();
@@ -84,45 +78,48 @@ public class Turnos extends JFrame implements ActionListener {
 		sistema.fromJson(contenido);
 		
 		String estado = sistema.diaCompleto(fecha);
+		LocalDate hoy = LocalDate.now();
+		
 		
 		if(estado.compareTo("medio") == 0 || estado.compareTo("lleno") == 0) {
 			StringBuilder turnosDelDia = sistema.getTurnosDelDia(fecha);
 			JTextArea turnosDelDiaText = new JTextArea(String.valueOf(turnosDelDia));
 			turnosDelDiaText.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			turnosDelDiaText.setBackground(UIManager.getColor("InternalFrame.borderColor"));
-			turnosDelDiaText.setBounds(103, 139, 430, 179);
+			turnosDelDiaText.setBounds(60, 139, 599, 155);
 			turnosDelDiaText.setEditable(false);
 			contentPane.add(turnosDelDiaText);
 			
 		}
 		
-		if(estado.compareTo("medio") == 0 || estado.compareTo("vacio") == 0) {
+		
+		if(estado.compareTo("medio") == 0 || estado.compareTo("vacio") == 0 && fecha.compareTo(hoy) > 0) {
 			LocalTime proximo = sistema.proximoTurnoDelDia(fecha);
 			JLabel proximoTurno = new JLabel("Próximo turno: " + proximo.toString());
 			proximoTurno.setFont(new Font("Tahoma", Font.BOLD, 14));
-			proximoTurno.setBounds(103, 329, 177, 23);
+			proximoTurno.setBounds(60, 311, 177, 23);
 			contentPane.add(proximoTurno);
 			
 			JLabel nombreI = new JLabel("A nombre de: ");
 			nombreI.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			nombreI.setBounds(103, 363, 120, 23);
+			nombreI.setBounds(60, 345, 120, 23);
 			contentPane.add(nombreI);
 			
 			ArrayList<Tipo> tiposDeTurno = ArchivosJson.leerTipos();
 			
-			JComboBox tipos = new JComboBox();
+			JComboBox<String> tipos = new JComboBox<String>();
 			tipos.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			
 			for(Tipo aux : tiposDeTurno) {
 				tipos.addItem(aux.getTipo());
 			}
 			
-			tipos.setBounds(302, 329, 208, 22);
+			tipos.setBounds(259, 311, 400, 22);
 			contentPane.add(tipos);
 			
 			nombre = new JTextField();
 			nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			nombre.setBounds(206, 363, 304, 23);
+			nombre.setBounds(163, 345, 496, 23);
 			contentPane.add(nombre);
 			nombre.setColumns(10);
 			
@@ -136,9 +133,10 @@ public class Turnos extends JFrame implements ActionListener {
 					
 					VerTurno turnoAGuardar = new VerTurno(fecha, proximo, tipoIng, nombreIng);
 					turnoAGuardar.setVisible(true);
+					dispose();
 				}
 			});
-			aceptar.setBounds(361, 407, 149, 42);
+			aceptar.setBounds(510, 389, 149, 42);
 			contentPane.add(aceptar);
 			
 			JButton volver = new JButton("Volver");
@@ -146,17 +144,18 @@ public class Turnos extends JFrame implements ActionListener {
 			volver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					Calendario calendar = new Calendario();
-					calendar.setVisible(true);			}
+					calendar.setVisible(true);	
+					dispose();
+					}
 			});
-			volver.setBounds(103, 407, 149, 42);
+			volver.setBounds(60, 389, 149, 42);
 			contentPane.add(volver);
 			
 			
 		} else {
-			
 			JLabel sinTurnos = new JLabel("No hay más turnos disponibles.");
 			sinTurnos.setFont(new Font("Tahoma", Font.BOLD, 15));
-			sinTurnos.setBounds(103, 331, 259, 23);
+			sinTurnos.setBounds(60, 313, 259, 23);
 			contentPane.add(sinTurnos);
 			
 			JButton volver2 = new JButton("Volver");
@@ -164,13 +163,19 @@ public class Turnos extends JFrame implements ActionListener {
 			volver2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					Calendario calendar = new Calendario();
-					calendar.setVisible(true);			}
+					calendar.setVisible(true);
+					dispose();
+					}
 			});
-			volver2.setBounds(230, 407, 149, 42);
+			volver2.setBounds(284, 389, 149, 42);
 			contentPane.add(volver2);
 			
 	}
 		
+		JLabel creditos = new JLabel("2020 \u00A9 Candela Yarossi");
+		creditos.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		creditos.setBounds(594, 456, 110, 14);
+		contentPane.add(creditos);
 		
 	}
 

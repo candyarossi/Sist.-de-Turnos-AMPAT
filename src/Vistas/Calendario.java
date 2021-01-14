@@ -1,50 +1,33 @@
 package Vistas;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import org.json.JSONArray;
-
 import com.toedter.calendar.JCalendar;
-
-import Json.ArchivosJson;
 import Objetos.DayOfWeekEvaluator;
-import Objetos.Dia;
-import Objetos.Horario;
 import Objetos.Sistema;
-import Objetos.Tipo;
-import Objetos.Turno;
-
-import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JDayChooser;
-
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import javax.swing.JButton;
 
 
 public class Calendario extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -67,6 +50,7 @@ public class Calendario extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Calendario() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("media\\logo.png"));
 		setTitle("Sistema de Turnos SU TAXI - AMPAT");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 630, 520);
@@ -75,7 +59,7 @@ public class Calendario extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel titulo = new JLabel("Sistema de Turnos SU TAXI - AMPAT");
+		JLabel titulo = new JLabel("Sistema de Turnos");
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		titulo.setBounds(10, 25, 594, 83);
@@ -101,9 +85,10 @@ public class Calendario extends JFrame implements ActionListener {
 				LocalDate fechaN = Sistema.convertToLocalDateViaInstant(fecha);
 				Turnos turnos = new Turnos(fechaN);
 				turnos.setVisible(true);
+				dispose();
 			}
 		});
-		mostrar.setBounds(361, 407, 149, 42);
+		mostrar.setBounds(361, 389, 149, 42);
 		contentPane.add(mostrar);
 		
 		JButton volver = new JButton("Volver");
@@ -112,10 +97,16 @@ public class Calendario extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				Inicio inicio = new Inicio();
 				inicio.setVisible(true);
+				dispose();
 			}
 		});
-		volver.setBounds(103, 407, 149, 42);
+		volver.setBounds(103, 389, 149, 42);
 		contentPane.add(volver);
+		
+		JLabel creditos = new JLabel("2020 \u00A9 Candela Yarossi");
+		creditos.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		creditos.setBounds(494, 456, 110, 14);
+		contentPane.add(creditos);
 		
 	}
 
